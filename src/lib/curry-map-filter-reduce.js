@@ -1,9 +1,9 @@
-const curry =
+export const curry =
   (func) =>
   (arg, ..._) =>
     _.length ? func(arg, ..._) : (..._) => func(arg, ..._);
 
-const map = curry((func, iter) => {
+export const map = curry((func, iter) => {
   let res = [];
   for (const a of iter) {
     res.push(func(a));
@@ -11,7 +11,7 @@ const map = curry((func, iter) => {
   return res;
 });
 
-const filter = curry((func, iter) => {
+export const filter = curry((func, iter) => {
   let res = [];
   for (const a of iter) {
     if (func(a)) res.push(a);
@@ -19,7 +19,7 @@ const filter = curry((func, iter) => {
   return res;
 });
 
-const reduce = curry((func, acc, iter) => {
+export const reduce = curry((func, acc, iter) => {
   if (!iter) {
     iter = acc[Symbol.iterator]();
     acc = iter.next().value;
@@ -29,3 +29,10 @@ const reduce = curry((func, acc, iter) => {
   }
   return acc;
 });
+
+export const go = (...args) => reduce((acc, func) => func(acc), args);
+
+export const pipe =
+  (func, ...funcs) =>
+  (...args) =>
+    go(func(...args), ...funcs);
