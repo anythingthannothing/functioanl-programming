@@ -1,4 +1,4 @@
-import { reduce } from './lib/curry-map-filter-reduce.js';
+import { go, curry, reduce } from './lib/curry-map-filter-reduce.js';
 import { test, add, log } from './lib/common.js';
 
 // range
@@ -34,3 +34,16 @@ log(reduce(add, L.range(4))); // 6
 
 test('range', 10, () => reduce(add, range(1000000)));
 test('range', 10, () => reduce(add, L.range(1000000)));
+
+const take = curry((limit, iter) => {
+  let res = [];
+  for (const a of iter) {
+    res.push(a);
+    if (res.length == limit) return res;
+  }
+  return res;
+});
+
+go(range(10000), take(5), log);
+
+log(take(5, L.range(100)), log);
