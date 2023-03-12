@@ -30,6 +30,20 @@ export const reduce = curry((func, acc, iter) => {
   return acc;
 });
 
+export const take = curry((l, iter) => {
+  let res = [];
+  iter = iter[Symbol.iterator]();
+  let cur;
+  while (!(cur = iter.next()).done) {
+    const a = cur.value;
+    res.push(a);
+    if (res.length == l) return res;
+  }
+  return res;
+});
+
+export const takeAll = take(Infinity);
+
 export const go = (...args) => reduce((acc, func) => func(acc), args);
 
 export const pipe =
